@@ -6,7 +6,8 @@ NAME = Diseased Newt
 
 # Optimizations
 KBUILD_CFLAGS   += -march=armv8-a+crypto+crc -mtune=cortex-a72.cortex-a53 -O2 -Wno-error \
-		   -ffast-math -mlow-precision-recip-sqrt -mlow-precision-sqrt -mlow-precision-div
+		   -ffast-math -mlow-precision-recip-sqrt -mlow-precision-sqrt -mlow-precision-div \
+		   -ftree-vectorize -floop-vectorize -ftree-slp-vectorize
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
