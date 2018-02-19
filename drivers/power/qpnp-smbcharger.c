@@ -5211,8 +5211,9 @@ static void smbchg_hvdcp_det_work(struct work_struct *work)
 				pr_err("Couldn't disable input missing poller rc=%d\n", rc);
 			if (delayed_work_pending(&chip->iusb_5v_2a_detect_work))
 				cancel_delayed_work(&chip->iusb_5v_2a_detect_work);
-			schedule_delayed_work(&chip->iusb_5v_2a_detect_work,
-					msecs_to_jiffies(AICL_5V_2A_DETECT_DELAY_MS));
+                    queue_delayed_work(system_power_efficient_wq,
+                        &chip->iusb_5v_2a_detect_work,
+                        msecs_to_jiffies(AICL_5V_2A_DETECT_DELAY_MS));
 		}
 		g_is_hvdcp_detect_done = true;
 #endif /* CONFIG_HTC_BATT */
@@ -6031,7 +6032,7 @@ static void increment_aicl_count(struct smbchg_chip *chip)
 
 static int wait_for_usbin_uv(struct smbchg_chip *chip, bool high)
 {
-	int rc;
+	int rc =0;
 	int tries = 3;
 	struct completion *completion = &chip->usbin_uv_lowered;
 	bool usbin_uv;
@@ -6061,7 +6062,7 @@ static int wait_for_usbin_uv(struct smbchg_chip *chip, bool high)
 
 static int wait_for_src_detect(struct smbchg_chip *chip, bool high)
 {
-	int rc;
+	int rc =0;
 	int tries = 3;
 	struct completion *completion = &chip->src_det_lowered;
 	bool src_detect;
@@ -7626,9 +7627,6 @@ static irqreturn_t usbin_uv_handler(int irq, void *_chip)
 	struct smbchg_chip *chip = _chip;
 	int aicl_level = smbchg_get_aicl_level_ma(chip);
 	int rc;
-#ifdef CONFIG_HTC_BATT
-	int vbus = pmi8994_get_usbin_voltage_now();
-#endif /* CONFIG_HTC_BATT */
 	u8 reg;
 
 	rc = smbchg_read(chip, &reg, chip->usb_chgpth_base + RT_STS, 1);
