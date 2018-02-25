@@ -4,11 +4,6 @@ SUBLEVEL = 105
 EXTRAVERSION =
 NAME = Diseased Newt
 
-# Optimizations
-KBUILD_CFLAGS   += -march=armv8-a+crypto+crc -mtune=cortex-a72.cortex-a53 -O2 -Wno-error \
-		   -ffast-math -mlow-precision-recip-sqrt -mlow-precision-sqrt -mlow-precision-div \
-		   -ftree-vectorize -floop-vectorize -ftree-slp-vectorize
-
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README
@@ -409,6 +404,11 @@ KBUILD_CFLAGS   := -Werror -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -std=gnu89
+
+# Optimizations
+KBUILD_CFLAGS   += -march=armv8-a+crypto+crc -mtune=cortex-a72.cortex-a53 -O2 -Wno-error \
+		   -ffast-math -mlow-precision-recip-sqrt -mlow-precision-sqrt -mlow-precision-div \
+		   -ftree-vectorize -ftree-slp-vectorize
 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
